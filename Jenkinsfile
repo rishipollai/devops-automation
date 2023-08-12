@@ -53,7 +53,7 @@ pipeline {
 
          stage('Docker Deploy') {
             steps {
-                 sh 'docker run -d -p 8010:8080 -t dockerDeploy rishipollai/$JOB_NAME:latest'
+                 sh 'docker run -d -p 8010:8080 -t dockerdeploy rishipollai/$JOB_NAME:latest'
             }
          }
 
