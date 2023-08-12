@@ -24,22 +24,32 @@ pipeline {
         }
       }
     }
-    // stage('Build and Push Docker Image') {
-    //   environment {
-    //     DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
-    //     // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
-    //     REGISTRY_CREDENTIALS = credentials('docker-cred')
-    //   }
-    //   steps {
-    //     script {
-    //         sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
-    //         def dockerImage = docker.image("${DOCKER_IMAGE}")
-    //         docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
-    //             dockerImage.push()
-    //         }
-    //     }
-    //   }
-    // }
+   stage('Dockerfile build image') {
+            steps {
+                 sh 'docker image build -t $JOB_NAME:V1.$BUILD_ID .'
+            }
+         }
+
+         stage('Docker tag images') {
+            steps {
+
+                 sh 'docker image tag $JOB_NAME:V1.$BUILD_ID rishipollai/$JOB_NAME:V1.$BUILD_ID'
+                 sh 'docker image tag $JOB_NAME:V1.$BUILD_ID rishipollai/$JOB_NAME:latest'
+               }
+         }
+
+         stage('Push Docker images to dockerhub') {
+            steps {
+                  withCredentials([string(credentialsId: 'dockerhub_password', variable: 'dockerhub_password')]) {
+                     sh "docker login -u rishipollai -p ${dockerhub_password}"
+                     sh 'docker image push rishipollai/$JOB_NAME:V1.$BUILD_ID'
+                     sh 'docker image push rishipollai/$JOB_NAME:latest'
+                     
+                    //  sh 'docker image rm rishipollai/$JOB_NAME:V1.$BUILD_ID rishipollai/$JOB_NAME:latest $JOB_NAME:V1.$BUILD_ID'
+                
+               }
+            }
+         }
     // stage('Update Deployment File') {
     //     environment {
     //         GIT_REPO_NAME = "Jenkins-Zero-To-Hero"
