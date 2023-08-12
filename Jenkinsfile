@@ -53,7 +53,10 @@ pipeline {
 
          stage('Docker Deploy') {
             steps {
-                 sh 'docker run -d -p 8010:8080 -t dockerdeploy rishipollai/$JOB_NAME:latest'
+              ithCredentials([string(credentialsId: 'dockerhub_password', variable: 'dockerhub_password')]) {
+                     sh "docker login -u rishipollai -p ${dockerhub_password}"
+                     sh 'docker run -d -p 8010:8080 -t dockerdeploy rishipollai/$JOB_NAME:latest'
+               }       
             }
          }
 
