@@ -1,8 +1,5 @@
 pipeline {
   agent any
-  // tools{
-  //   maven '3.6.3'
-  // }
   stages {
     stage('Checkout') {
       steps {
@@ -17,16 +14,16 @@ pipeline {
         sh 'mvn clean package'
       }
     }
-    // stage('Static Code Analysis') {
-    //   environment {
-    //     SONAR_URL = "http://34.201.116.83:9000"
-    //   }
-    //   steps {
-    //     withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-    //       sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
-    //     }
-    //   }
-    // }
+    stage('Static Code Analysis') {
+      environment {
+        SONAR_URL = "http://13.126.98.242:9000"
+      }
+      steps {
+        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
+          sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+        }
+      }
+    }
     // stage('Build and Push Docker Image') {
     //   environment {
     //     DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
