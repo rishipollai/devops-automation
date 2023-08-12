@@ -45,11 +45,19 @@ pipeline {
                      sh 'docker image push rishipollai/$JOB_NAME:V1.$BUILD_ID'
                      sh 'docker image push rishipollai/$JOB_NAME:latest'
                      
-                    //  sh 'docker image rm rishipollai/$JOB_NAME:V1.$BUILD_ID rishipollai/$JOB_NAME:latest $JOB_NAME:V1.$BUILD_ID'
+                     sh 'docker image rm rishipollai/$JOB_NAME:V1.$BUILD_ID rishipollai/$JOB_NAME:latest $JOB_NAME:V1.$BUILD_ID'
                 
                }
             }
          }
+
+         stage('Docker Deploy') {
+            steps {
+                 sh 'docker run -d -p 8010:8080 -t dockerDeploy rishipollai/$JOB_NAME:latest'
+            }
+         }
+
+
     // stage('Update Deployment File') {
     //     environment {
     //         GIT_REPO_NAME = "Jenkins-Zero-To-Hero"
