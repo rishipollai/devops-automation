@@ -1,67 +1,51 @@
-# Spring Boot based Java web application
- 
-This is a simple Sprint Boot based Java application that can be built using Maven. Sprint Boot dependencies are handled using the pom.xml 
-at the root directory of the repository.
+# Spring Boot Hello World
 
-This is a MVC architecture based application where controller returns a page with title and message attributes to the view.
+**A simple Spring Boot 2.x app to send hello world message to a user**
 
-## Execute the application locally and access it using your browser
+## How to Run Application
 
-Checkout the repo and move to the directory
+**Start the application using any of the commands mentioned below**
 
-```
-git clone https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/sprint-boot-app
-cd java-maven-sonar-argocd-helm-k8s/sprint-boot-app
-```
-
-Execute the Maven targets to generate the artifacts
-
-```
-mvn clean package
-```
-
-The above maven target stroes the artifacts to the `target` directory. You can either execute the artifact on your local machine
-(or) run it as a Docker container.
-
-** Note: To avoid issues with local setup, Java versions and other dependencies, I would recommend the docker way. **
+> **Note:** First two commands need to run inside the root folder of this project i.e inside the **spring-boot-hello-world** folder
 
 
-### Execute locally (Java 11 needed) and access the application on http://localhost:8080
-
-```
-java -jar target/spring-boot-web.jar
-```
-
-### The Docker way
-
-Build the Docker Image
-
-```
-docker build -t ultimate-cicd-pipeline:v1 .
-```
-
-```
-docker run -d -p 8010:8080 -t ultimate-cicd-pipeline:v1
-```
-
-Hurray !! Access the application on `http://<ip-address>:8010`
+- **Using maven** <br/>``` mvn spring-boot:run```
 
 
-## Next Steps
-
-### Configure a Sonar Server locally
-
-```
-apt install unzip
-adduser sonarqube
-wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.4.0.54424.zip
-unzip *
-chmod -R 755 /home/sonarqube/sonarqube-9.4.0.54424
-chown -R sonarqube:sonarqube /home/sonarqube/sonarqube-9.4.0.54424
-cd sonarqube-9.4.0.54424/bin/linux-x86-64/
-./sonar.sh start
-```
-
-Hurray !! Now you can access the `SonarQube Server` on `http://<ip-address>:9000` 
+- **From jar file**
+  Create a jar file using '**mvn clean install**' command and then execute
+  <br/>```java -jar target/spring-boot-2-hello-world-1.0.2-SNAPSHOT.jar```
 
 
+- **Directly from IDE**
+  <br/>```Right click on HelloWorldApplication.java and click on 'Run' option```
+  <br/><br/>
+
+> **Note:** By default spring boot application starts on port number 8080. If port 8080 is occupied in your system then you can change the port number by uncommenting and updating the **server.port** property inside the **application.properties** file that is available inside the **src > main > resources** folder.
+
+<br/>
+
+**Send an HTTP GET request to '/hello' endpoint using any of the two methods**
+
+- **Browser or REST client**
+  <br/>```http://localhost:8080/hello```
+
+
+- **cURL**
+  <br/>```curl --request GET 'http://localhost:8080/hello'```
+
+
+## How to Run Unit Test Cases
+
+**Run the test cases using any of the commands mentioned below**
+
+> **Note:** These commands need to run inside the root folder of this project i.e inside the **spring-boot-hello-world** folder
+
+- **To run all the test cases**
+  <br/>```mvn test```
+
+
+- **To run a particular test class**
+  <br/>```mvn -Dtest=HelloWorldControllerTest test```
+  <br/>or
+  <br/>```mvn -Dtest=HelloWorldApplicationTests test```
